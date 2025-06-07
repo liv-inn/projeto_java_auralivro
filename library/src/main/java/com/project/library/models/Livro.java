@@ -1,32 +1,32 @@
-
-
 package com.project.library.models;
 
 
 public class Livro {
-    private int id;
+    private Long id;
     private String titulo;
     private String isbn;
     private Integer anoPublicacao;
-    private int autorId;
+    private Long autorId;
     private String autorNome;
 
     public Livro() {}
 
-    public Livro(String titulo, String isbn, Integer anoPublicacao, int autorId) {
+    public Livro(String titulo, String isbn, Integer anoPublicacao, Long autorId) {
         this.titulo = titulo;
         this.isbn = isbn;
         this.anoPublicacao = anoPublicacao;
         this.autorId = autorId;
     }
 
-    public int getId() {
+
+     public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
+    
 
     public String getTitulo() {
         return titulo;
@@ -52,11 +52,11 @@ public class Livro {
         this.anoPublicacao = anoPublicacao;
     }
 
-    public int getAutorId() {
+    public Long getAutorId() {
         return autorId;
     }
 
-    public void setAutorId(int autorId) {
+    public void setAutorId(Long autorId) {
         this.autorId = autorId;
     }
 
@@ -67,6 +67,8 @@ public class Livro {
     public void setAutorNome(String autorNome) {
         this.autorNome = autorNome;
     }
+
+   
 
     
 }

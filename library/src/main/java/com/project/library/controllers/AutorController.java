@@ -1,4 +1,3 @@
-
 package com.project.library.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,32 +19,54 @@ public class AutorController {
     private AutorService autorService;
 
     @GetMapping
-    public String listarAutores(Model model) {
-        model.addAttribute("autores", autorService.listarAutores());
-        return "autores/listar";
-    }
-
-    @GetMapping("/novo")
-    public String formNovoAutor(Model model) {
-        model.addAttribute("autor", new Autor());
-        return "autores/form";
+    public String autores(Model model) {
+        try {
+            model.addAttribute("autores", autorService.listarAutores());
+            model.addAttribute("autor", new Autor());
+            return "autores"; 
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("autores", java.util.Collections.emptyList());
+            model.addAttribute("autor", new Autor());
+            return "autores";
+        }
     }
 
     @PostMapping
     public String salvarAutor(@ModelAttribute Autor autor) {
-        autorService.salvarAutor(autor);
-        return "redirect:/autores";
+        try {
+            autorService.salvarAutor(autor);
+            return "redirect:/autores";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/autores?erro=true";
+        }
     }
 
     @GetMapping("/editar/{id}")
-    public String formEditarAutor(@PathVariable int id, Model model) {
-        model.addAttribute("autor", autorService.buscarAutorPorId(id));
-        return "autores/form";
+    public String editarAutor(@PathVariable Long id, Model model) {
+        try {
+            Autor autor = autorService.buscarAutorPorId(id);
+            if (autor == null) {
+                return "redirect:/autores";
+            }
+            model.addAttribute("autor", autor);
+            model.addAttribute("autores", autorService.listarAutores());
+            return "autores";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/autores";
+        }
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluirAutor(@PathVariable int id) {
-        autorService.deletarAutor(id);
-        return "redirect:/autores";
+    public String excluirAutor(@PathVariable Long id) {
+        try {
+            autorService.deletarAutor(id);
+            return "redirect:/autores";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/autores?erro=exclusao";
+        }
     }
 }

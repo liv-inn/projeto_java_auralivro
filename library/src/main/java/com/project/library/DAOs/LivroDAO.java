@@ -33,7 +33,7 @@ public class LivroDAO {
         return jdbc.query(sql, new LivroRowMapper());
     }
 
-    public Livro buscarPorId(int id) {
+    public Livro buscarPorId(Long id) {
         String sql = "SELECT l.*, a.nome as autor_nome FROM livro l JOIN autor a ON l.autor_id = a.id WHERE l.id = ?";
         return jdbc.queryForObject(sql, new LivroRowMapper(), id);
     }
@@ -43,7 +43,7 @@ public class LivroDAO {
         jdbc.update(sql, livro.getTitulo(), livro.getIsbn(), livro.getAnoPublicacao(), livro.getAutorId(), livro.getId());
     }
 
-    public void deletar(int id) {
+    public void deletar(Long id) {
         String sql = "DELETE FROM livro WHERE id = ?";
         jdbc.update(sql, id);
     }
@@ -57,11 +57,11 @@ public class LivroDAO {
         @Override
         public Livro mapRow(ResultSet rs, int rowNum) throws SQLException {
             Livro livro = new Livro();
-            livro.setId(rs.getInt("id"));
+            livro.setId(rs.getLong("id"));
             livro.setTitulo(rs.getString("titulo"));
             livro.setIsbn(rs.getString("isbn"));
             livro.setAnoPublicacao(rs.getInt("ano_publicacao"));
-            livro.setAutorId(rs.getInt("autor_id"));
+            livro.setAutorId(rs.getLong("autor_id"));
             livro.setAutorNome(rs.getString("autor_nome"));
             return livro;
         }

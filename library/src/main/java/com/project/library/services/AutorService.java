@@ -1,4 +1,3 @@
-
 package com.project.library.services;
 
 
@@ -23,7 +22,7 @@ public class AutorService {
         return autorDAO.listarTodos();
     }
 
-    public Autor buscarAutorPorId(int id) {
+    public Autor buscarAutorPorId(Long id) {
         return autorDAO.buscarPorId(id);
     }
 
@@ -31,7 +30,7 @@ public class AutorService {
         autorDAO.atualizar(autor);
     }
 
-    public void deletarAutor(int id) {
+    public void deletarAutor(Long id) {
         autorDAO.deletar(id);
     }
 }

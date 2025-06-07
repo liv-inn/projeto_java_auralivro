@@ -34,7 +34,7 @@ public class AutorDAO {
         return jdbc.query(sql, new AutorRowMapper());
     }
 
-    public Autor buscarPorId(int id) {
+    public Autor buscarPorId(Long id) {
         String sql = "SELECT * FROM autor WHERE id = ?";
         return jdbc.queryForObject(sql, new AutorRowMapper(), id);
     }
@@ -44,7 +44,7 @@ public class AutorDAO {
         jdbc.update(sql, autor.getNome(), autor.getNacionalidade(), autor.getId());
     }
 
-    public void deletar(int id) {
+    public void deletar(Long id) {
         String sql = "DELETE FROM autor WHERE id = ?";
         jdbc.update(sql, id);
     }
@@ -53,7 +53,7 @@ public class AutorDAO {
         @Override
         public Autor mapRow(ResultSet rs, int rowNum) throws SQLException {
             Autor autor = new Autor();
-            autor.setId(rs.getInt("id"));
+            autor.setId(rs.getLong("id"));
             autor.setNome(rs.getString("nome"));
             autor.setNacionalidade(rs.getString("nacionalidade"));
             return autor;

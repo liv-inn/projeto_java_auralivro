@@ -1,12 +1,11 @@
-
 package com.project.library.models;
 
 
 import java.time.LocalDate;
 
 public class Emprestimo {
-    private int id;
-    private int livroId;
+    private Long id;
+    private Long livroId;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
     private String nomeLocatario;
@@ -14,25 +13,25 @@ public class Emprestimo {
 
     public Emprestimo() {}
 
-    public Emprestimo(int livroId, LocalDate dataEmprestimo, String nomeLocatario) {
+    public Emprestimo(Long livroId, LocalDate dataEmprestimo, String nomeLocatario) {
         this.livroId = livroId;
         this.dataEmprestimo = dataEmprestimo;
         this.nomeLocatario = nomeLocatario;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getLivroId() {
+    public Long getLivroId() {
         return livroId;
     }
 
-    public void setLivroId(int livroId) {
+    public void setLivroId(Long livroId) {
         this.livroId = livroId;
     }
 

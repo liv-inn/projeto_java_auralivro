@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.project.library.DAOs.LivroDAO;
 import com.project.library.models.Livro;
@@ -14,15 +15,20 @@ public class LivroService {
     @Autowired
     private LivroDAO livroDAO;
 
+    @Transactional
     public void salvarLivro(Livro livro) {
-        livroDAO.inserir(livro);
+        if (livro.getId() == null) {
+            livroDAO.inserir(livro);
+        } else {
+            livroDAO.atualizar(livro);
+        }
     }
 
     public List<Livro> listarLivros() {
         return livroDAO.listarTodos();
     }
 
-    public Livro buscarLivroPorId(int id) {
+    public Livro buscarLivroPorId(Long id) {
         return livroDAO.buscarPorId(id);
     }
 
@@ -30,7 +36,7 @@ public class LivroService {
         livroDAO.atualizar(livro);
     }
 
-    public void deletarLivro(int id) {
+    public void deletarLivro(Long id) {
         livroDAO.deletar(id);
     }
 

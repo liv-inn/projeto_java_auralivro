@@ -1,4 +1,3 @@
-
 package com.project.library.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,48 +16,64 @@ import com.project.library.services.LivroService;
 @Controller
 @RequestMapping("/livros")
 public class LivroController {
+    
     @Autowired
     private LivroService livroService;
-    
     @Autowired
     private AutorService autorService;
 
     @GetMapping
-    public String listarLivros(Model model) {
-        model.addAttribute("livros", livroService.listarLivros());
-        return "livros/listar";
-    }
-
-    @GetMapping("/novo")
-    public String formNovoLivro(Model model) {
-        model.addAttribute("livro", new Livro());
-        model.addAttribute("autores", autorService.listarAutores());
-        return "livros/form";
+    public String livros(Model model) {
+        try {
+            model.addAttribute("livros", livroService.listarLivros());
+            model.addAttribute("livro", new Livro());
+            model.addAttribute("autores", autorService.listarAutores());
+            return "livros"; 
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("livros", java.util.Collections.emptyList());
+            model.addAttribute("livro", new Livro());
+            model.addAttribute("autores", java.util.Collections.emptyList());
+            return "livros";
+        }
     }
 
     @PostMapping
     public String salvarLivro(@ModelAttribute Livro livro) {
-        livroService.salvarLivro(livro);
-        return "redirect:/livros";
+        try {
+            livroService.salvarLivro(livro);
+            return "redirect:/livros";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/livros?erro=true";
+        }
     }
 
     @GetMapping("/editar/{id}")
-    public String formEditarLivro(@PathVariable int id, Model model) {
-        model.addAttribute("livro", livroService.buscarLivroPorId(id));
-        model.addAttribute("autores", autorService.listarAutores());
-        return "livros/form";
+    public String editarLivro(@PathVariable Long id, Model model) {
+        try {
+            Livro livro = livroService.buscarLivroPorId(id);
+            if (livro == null) {
+                return "redirect:/livros";
+            }
+            model.addAttribute("livro", livro);
+            model.addAttribute("livros", livroService.listarLivros());
+            model.addAttribute("autores", autorService.listarAutores());
+            return "livros";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/livros";
+        }
     }
 
     @GetMapping("/excluir/{id}")
-    public String excluirLivro(@PathVariable int id) {
-        livroService.deletarLivro(id);
-        return "redirect:/livros";
-    }
-
-    @GetMapping("/por-autor/{autorId}")
-    public String listarPorAutor(@PathVariable int autorId, Model model) {
-        model.addAttribute("livros", livroService.buscarLivrosPorAutor(autorId));
-        model.addAttribute("autor", autorService.buscarAutorPorId(autorId));
-        return "livros/listar-por-autor";
+    public String excluirLivro(@PathVariable Long id) {
+        try {
+            livroService.deletarLivro(id);
+            return "redirect:/livros";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/livros?erro=exclusao";
+        }
     }
 }

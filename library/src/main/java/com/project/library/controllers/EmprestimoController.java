@@ -1,4 +1,3 @@
-
 package com.project.library.controllers;
 
 import java.time.LocalDate;
@@ -26,28 +25,58 @@ public class EmprestimoController {
     private LivroService livroService;
 
     @GetMapping
-    public String listarEmprestimos(Model model) {
-        model.addAttribute("emprestimos", emprestimoService.listarEmprestimos());
-        return "emprestimos/listar";
-    }
-
-    @GetMapping("/novo")
-    public String formNovoEmprestimo(Model model) {
-        model.addAttribute("emprestimo", new Emprestimo());
-        model.addAttribute("livros", livroService.listarLivros());
-        return "emprestimos/form";
+    public String emprestimos(Model model) {
+        try {
+            model.addAttribute("emprestimos", emprestimoService.listarEmprestimos());
+            model.addAttribute("emprestimo", new Emprestimo());
+            model.addAttribute("livros", livroService.listarLivros());
+            return "emprestimos"; 
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("emprestimos", java.util.Collections.emptyList());
+            model.addAttribute("emprestimo", new Emprestimo());
+            model.addAttribute("livros", java.util.Collections.emptyList());
+            return "emprestimos";
+        }
     }
 
     @PostMapping
     public String registrarEmprestimo(@ModelAttribute Emprestimo emprestimo) {
-        emprestimo.setDataEmprestimo(LocalDate.now());
-        emprestimoService.registrarEmprestimo(emprestimo);
-        return "redirect:/emprestimos";
+        try {
+            emprestimo.setDataEmprestimo(LocalDate.now());
+            emprestimoService.registrarEmprestimo(emprestimo);
+            return "redirect:/emprestimos";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/emprestimos?erro=true";
+        }
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editarEmprestimo(@PathVariable Long id, Model model) {
+        try {
+            Emprestimo emprestimo = emprestimoService.buscarEmprestimoPorId(id);
+            if (emprestimo == null) {
+                return "redirect:/emprestimos";
+            }
+            model.addAttribute("emprestimo", emprestimo);
+            model.addAttribute("emprestimos", emprestimoService.listarEmprestimos());
+            model.addAttribute("livros", livroService.listarLivros());
+            return "emprestimos";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/emprestimos";
+        }
     }
 
     @GetMapping("/devolver/{id}")
-    public String registrarDevolucao(@PathVariable int id) {
-        emprestimoService.registrarDevolucao(id);
-        return "redirect:/emprestimos";
+    public String registrarDevolucao(@PathVariable Long id) {
+        try {
+            emprestimoService.registrarDevolucao(id);
+            return "redirect:/emprestimos";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/emprestimos?erro=devolucao";
+        }
     }
 }

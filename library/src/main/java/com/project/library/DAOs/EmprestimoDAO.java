@@ -33,7 +33,7 @@ public class EmprestimoDAO {
         return jdbc.query(sql, new EmprestimoRowMapper());
     }
 
-    public Emprestimo buscarPorId(int id) {
+    public Emprestimo buscarPorId(Long id) {
         String sql = "SELECT e.*, l.titulo as livro_titulo FROM emprestimo e JOIN livro l ON e.livro_id = l.id WHERE e.id = ?";
         return jdbc.queryForObject(sql, new EmprestimoRowMapper(), id);
     }
@@ -44,7 +44,7 @@ public class EmprestimoDAO {
                    emprestimo.getDataDevolucao(), emprestimo.getNomeLocatario(), emprestimo.getId());
     }
 
-    public void registrarDevolucao(int id, LocalDate dataDevolucao) {
+    public void registrarDevolucao(Long id, LocalDate dataDevolucao) {
         String sql = "UPDATE emprestimo SET data_devolucao = ? WHERE id = ?";
         jdbc.update(sql, dataDevolucao, id);
     }
@@ -53,8 +53,8 @@ public class EmprestimoDAO {
         @Override
         public Emprestimo mapRow(ResultSet rs, int rowNum) throws SQLException {
             Emprestimo emprestimo = new Emprestimo();
-            emprestimo.setId(rs.getInt("id"));
-            emprestimo.setLivroId(rs.getInt("livro_id"));
+            emprestimo.setId(rs.getLong("id"));
+            emprestimo.setLivroId(rs.getLong("livro_id"));
             emprestimo.setDataEmprestimo(rs.getDate("data_emprestimo").toLocalDate());
             
             if (rs.getDate("data_devolucao") != null) {

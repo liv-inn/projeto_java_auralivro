@@ -1,5 +1,3 @@
-
-
 package com.project.library.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,7 @@ import com.project.library.services.LivroService;
 
 @Controller
 public class MainController {
-
+    
     @Autowired
     private AutorService autorService;
     
@@ -25,13 +23,22 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("autoresCount", autorService.listarAutores().size());
-        model.addAttribute("livrosCount", livroService.listarLivros().size());
-        
-        long emprestimosAtivos = emprestimoService.listarEmprestimos().stream()
-            .filter(e -> e.getDataDevolucao() == null)
-            .count();
-        model.addAttribute("emprestimosCount", emprestimosAtivos);
+        try {
+            model.addAttribute("autoresCount", autorService.listarAutores().size());
+            model.addAttribute("livrosCount", livroService.listarLivros().size());
+            
+            long emprestimosAtivos = emprestimoService.listarEmprestimos().stream()
+                .filter(e -> e.getDataDevolucao() == null)
+                .count();
+            model.addAttribute("emprestimosAtivosCount", emprestimosAtivos);
+            
+        } catch (Exception e) {
+            System.err.println("Erro ao carregar estatísticas: " + e.getMessage());
+
+            model.addAttribute("autoresCount", 0);
+            model.addAttribute("livrosCount", 0);
+            model.addAttribute("emprestimosAtivosCount", 0);
+        }
         
         return "index";
     }

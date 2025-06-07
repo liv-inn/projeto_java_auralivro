@@ -22,7 +22,7 @@ public class EmprestimoService {
         return emprestimoDAO.listarTodos();
     }
 
-    public Emprestimo buscarEmprestimoPorId(int id) {
+    public Emprestimo buscarEmprestimoPorId(Long id) {
         return emprestimoDAO.buscarPorId(id);
     }
 
@@ -30,7 +30,7 @@ public class EmprestimoService {
         emprestimoDAO.atualizar(emprestimo);
     }
 
-    public void registrarDevolucao(int emprestimoId) {
-        emprestimoDAO.registrarDevolucao(emprestimoId, LocalDate.now());
+    public void registrarDevolucao(Long id) {
+        emprestimoDAO.registrarDevolucao(id, LocalDate.now());
     }
 }

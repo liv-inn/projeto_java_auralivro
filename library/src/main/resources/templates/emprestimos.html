@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookWorm - Empréstimos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fdfdfd;
+        }
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        }
+        .table-container, .form-container {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .status-pendente {
+            color: #dc3545;
+            font-weight: 500;
+        }
+        .status-devolvido {
+            color: #28a745;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h4">📋 <strong>Empréstimos</strong></h1>
+            <a href="/" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+
+        <div class="form-container">
+            <h2 class="h5 mb-3">+ Novo Empréstimo</h2>
+            <form th:action="@{/emprestimos}" th:object="${emprestimo}" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="livroId" class="form-label">Livro</label>
+                        <select class="form-select" id="livroId" th:field="*{livroId}" required>
+                            <option value="">Selecione um livro</option>
+                            <option th:each="livro : ${livros}" 
+                                    th:value="${livro.id}" 
+                                    th:text="${livro.titulo + ' (' + (livro.autorNome ?: 'Autor não encontrado') + ')'}"></option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="nomeLocatario" class="form-label">Nome do Locatário</label>
+                        <input type="text" class="form-control" id="nomeLocatario" th:field="*{nomeLocatario}" required>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-success">Registrar Empréstimo</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tabela de listagem -->
+        <div class="table-container">
+            <div class="d-flex justify-content-between mb-4">
+                <span class="text-muted" th:text="'Total: ' + (${emprestimos != null} ? ${emprestimos.size()} : 0) + ' empréstimos'">Total: 0 empréstimos</span>
+            </div>
+
+            <table class="table table-hover" th:if="${emprestimos != null and !emprestimos.isEmpty()}">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Livro</th>
+                        <th>Locatário</th>
+                        <th>Data Empréstimo</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="emprestimoItem : ${emprestimos}">
+                        <td th:text="${emprestimoItem.id}">1</td>
+                        <td th:text="${emprestimoItem.livroTitulo ?: 'Livro não encontrado'}">Título do Livro</td>
+                        <td th:text="${emprestimoItem.nomeLocatario}">Nome do Locatário</td>
+                        <td th:text="${emprestimoItem.dataEmprestimo != null} ? ${#temporals.format(emprestimoItem.dataEmprestimo, 'dd/MM/yyyy')} : 'N/A'">01/01/2023</td>
+                        <td>
+                            <span th:if="${emprestimoItem.dataDevolucao == null}" class="status-pendente">Pendente</span>
+                            <span th:if="${emprestimoItem.dataDevolucao != null}" class="status-devolvido">
+                                Devolvido em <span th:text="${#temporals.format(emprestimoItem.dataDevolucao, 'dd/MM/yyyy')}">01/01/2023</span>
+                            </span>
+                        </td>
+                        <td>
+                            <a th:if="${emprestimoItem.dataDevolucao == null}" 
+                               th:href="@{/emprestimos/devolver/{id}(id=${emprestimoItem.id})}" 
+                               class="btn btn-sm btn-success"
+                               onclick="return confirm('Confirmar devolução do livro?')">Registrar Devolução</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div th:if="${emprestimos == null or emprestimos.isEmpty()}" class="text-center text-muted py-4">
+                <p>Nenhum empréstimo registrado.</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
