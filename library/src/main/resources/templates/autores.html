@@ -36,7 +36,6 @@
             <a href="/" class="btn btn-outline-secondary">Voltar</a>
         </div>
 
-        <!-- Formulário -->
         <div class="form-container">
             <h2 class="h5 mb-3" th:text="${autor != null and autor.id != null} ? '✏️ Editar Autor' : '+ Adicionar Autor'">+ Adicionar Autor</h2>
             <form th:action="@{/autores}" th:object="${autor}" method="post">
@@ -61,7 +60,6 @@
             </form>
         </div>
 
-        <!-- Tabela de listagem -->
         <div class="table-container">
             <div class="d-flex justify-content-between mb-4">
                 <span class="text-muted" th:text="'Total: ' + (${autores != null} ? ${autores.size()} : 0) + ' autores'">Total: 0 autores</span>
