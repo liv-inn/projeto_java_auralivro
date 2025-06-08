@@ -13,13 +13,13 @@ import com.project.library.models.Autor;
 import com.project.library.services.AutorService;
 
 @Controller
-@RequestMapping("/autores")
+@RequestMapping("/autores") 
 public class AutorController {
     @Autowired
-    private AutorService autorService;
+    private AutorService autorService; 
 
-    @GetMapping
-    public String autores(Model model) {
+    @GetMapping 
+    public String autores(Model model) {  
         try {
             model.addAttribute("autores", autorService.listarAutores());
             model.addAttribute("autor", new Autor());
@@ -35,10 +35,15 @@ public class AutorController {
     @PostMapping
     public String salvarAutor(@ModelAttribute Autor autor) {
         try {
-            autorService.salvarAutor(autor);
-            return "redirect:/autores";
+            
+            if (autor.getId() != null) {
+                autorService.atualizarAutor(autor); 
+            } else {
+                autorService.salvarAutor(autor); 
+            }
+            return "redirect:/autores"; 
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
             return "redirect:/autores?erro=true";
         }
     }

@@ -50,7 +50,7 @@ public class EmprestimoDAO {
     }
 
     private static class EmprestimoRowMapper implements RowMapper<Emprestimo> {
-        @Override
+        @Override 
         public Emprestimo mapRow(ResultSet rs, int rowNum) throws SQLException {
             Emprestimo emprestimo = new Emprestimo();
             emprestimo.setId(rs.getLong("id"));

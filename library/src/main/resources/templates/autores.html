@@ -39,7 +39,7 @@
         <div class="form-container">
             <h2 class="h5 mb-3" th:text="${autor != null and autor.id != null} ? '✏️ Editar Autor' : '+ Adicionar Autor'">+ Adicionar Autor</h2>
             <form th:action="@{/autores}" th:object="${autor}" method="post">
-                <input type="hidden" th:field="*{id}" th:if="${autor != null and autor.id != null}">
+                <input type="hidden" th:field="*{id}">
                 
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -54,7 +54,9 @@
                 </div>
                 
                 <div class="d-flex justify-content-end gap-2">
-                    <button type="submit" class="btn btn-success">Salvar</button>
+                    <button type="submit" class="btn btn-success">
+                        <span th:text="${autor != null and autor.id != null} ? 'Atualizar' : 'Salvar'">Salvar</span>
+                    </button>
                     <a th:href="@{/autores}" class="btn btn-outline-secondary" th:if="${autor != null and autor.id != null}">Cancelar</a>
                 </div>
             </form>

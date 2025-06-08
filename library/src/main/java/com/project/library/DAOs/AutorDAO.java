@@ -15,28 +15,27 @@ import org.springframework.stereotype.Repository;
 
 import com.project.library.models.Autor;
 
-@Repository
+@Repository 
 public class AutorDAO {
-    private JdbcTemplate jdbc;
-
-    @Autowired
-    public AutorDAO(DataSource dataSource) {
-        this.jdbc = new JdbcTemplate(dataSource);
+    private JdbcTemplate jdbc; 
+    @Autowired 
+    public AutorDAO(DataSource dataSource) { 
+        this.jdbc = new JdbcTemplate(dataSource); 
     }
 
     public void inserir(Autor autor) {
         String sql = "INSERT INTO autor(nome, nacionalidade) VALUES(?, ?)";
-        jdbc.update(sql, autor.getNome(), autor.getNacionalidade());
+        jdbc.update(sql, autor.getNome(), autor.getNacionalidade()); 
     }
 
     public List<Autor> listarTodos() {
         String sql = "SELECT * FROM autor";
-        return jdbc.query(sql, new AutorRowMapper());
+        return jdbc.query(sql, new AutorRowMapper()); 
     }
 
     public Autor buscarPorId(Long id) {
         String sql = "SELECT * FROM autor WHERE id = ?";
-        return jdbc.queryForObject(sql, new AutorRowMapper(), id);
+        return jdbc.queryForObject(sql, new AutorRowMapper(), id); 
     }
 
     public void atualizar(Autor autor) {
@@ -49,9 +48,8 @@ public class AutorDAO {
         jdbc.update(sql, id);
     }
 
-    private static class AutorRowMapper implements RowMapper<Autor> {
-        @Override
-        public Autor mapRow(ResultSet rs, int rowNum) throws SQLException {
+    private static class AutorRowMapper implements RowMapper<Autor> { 
+        public Autor mapRow(ResultSet rs, int rowNum) throws SQLException { 
             Autor autor = new Autor();
             autor.setId(rs.getLong("id"));
             autor.setNome(rs.getString("nome"));
