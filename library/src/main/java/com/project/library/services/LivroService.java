@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.project.library.DAOs.LivroDAO;
 import com.project.library.models.Livro;
@@ -15,7 +14,7 @@ public class LivroService {
     @Autowired
     private LivroDAO livroDAO;
 
-    @Transactional
+    
     public void salvarLivro(Livro livro) {
         if (livro.getId() == null) {
             livroDAO.inserir(livro);

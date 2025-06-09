@@ -11,11 +11,7 @@
             font-family: 'Poppins', sans-serif;
             background-color: #fdfdfd;
         }
-        .card {
-            border: none;
-            border-radius: 1rem;
-            box-shadow: 0 0 15px rgba(0,0,0,0.05);
-        }
+      
         .table-container, .form-container {
             background: white;
             border-radius: 1rem;
@@ -37,7 +33,7 @@
         </div>
 
         <div class="form-container">
-            <h2 class="h5 mb-3" th:text="${livro != null and livro.id != null} ? '✏️ Editar Livro' : '+ Adicionar Livro'">+ Adicionar Livro</h2>
+            <h2 class="h5 mb-3" th:text="${livro != null and livro.id != null} ? '✏️ Editar Livro' : '+ Adicionar Livro'">+ Adicionar Livro</h2> 
             <form th:action="@{/livros}" th:object="${livro}" method="post">
                 <input type="hidden" th:field="*{id}" th:if="${livro != null and livro.id != null}">
 

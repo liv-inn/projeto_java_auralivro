@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/library_bd
+    url: jdbc:postgresql://localhost:5432/library_bd?characterEncoding=UTF-8
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -10,6 +10,12 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     mode: HTML
+
+  web:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 server:
   port: 8080
